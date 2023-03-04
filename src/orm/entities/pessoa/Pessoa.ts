@@ -15,9 +15,6 @@ export class Pessoa {
   sobrenome: string;
 
   @Column()
-  telefone: string;
-
-  @Column()
   email: string;
 
   @Column()
