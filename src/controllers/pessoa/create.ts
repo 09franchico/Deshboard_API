@@ -8,7 +8,12 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
   const data = req.body as IPessoa;
   const pessoaRepository = getRepository(Pessoa);
 
-  console.log(data)
+  const pessoaEmail = await pessoaRepository.findOne({where:{email:data.email}})
+
+  if(pessoaEmail){
+    const customError = new CustomError(400, 'General', `${data.email} ja existe!`, ['Email not found.']);
+    return next(customError);
+  }
 
   try {
 
