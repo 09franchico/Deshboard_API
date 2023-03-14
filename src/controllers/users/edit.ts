@@ -3,10 +3,11 @@ import { getRepository } from 'typeorm';
 
 import { User } from 'orm/entities/users/User';
 import { CustomError } from 'utils/response/custom-error/CustomError';
+import { IUsuario } from 'types/user';
 
 export const edit = async (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
-  const { username, name } = req.body;
+  const data = req.body as IUsuario;
 
   const userRepository = getRepository(User);
   try {
@@ -17,8 +18,12 @@ export const edit = async (req: Request, res: Response, next: NextFunction) => {
       return next(customError);
     }
 
-    user.username = username;
-    user.name = name;
+    user.username = data.username;
+    user.name = data.name;
+    user.email = data.email;
+    user.role = data.role;
+    user.password = data.password
+    user.hashPassword()
 
     try {
       await userRepository.save(user);
