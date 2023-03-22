@@ -11,15 +11,15 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
   const userRepository = getRepository(User);
   try {
 
-    const user = userRepository.create({
-        username:data.username,
-        name:data.name,
-        email:data.email,
-        password:data.password,
-        role:data.role
-    })
+    const newUser = new User();
+    newUser.username = data.username,
+    newUser.name = data.name,
+    newUser.email = data.email,
+    newUser.password = data.password,
+    newUser.hashPassword();
+    newUser.role = data.role
 
-    const userSave = await userRepository.save(user)
+    const userSave = await userRepository.save(newUser);
     res.customSuccess(200, 'List of users.', userSave);
 
   } catch (err) {
